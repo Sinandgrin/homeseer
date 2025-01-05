@@ -4,15 +4,14 @@ import logging
 
 from homeassistant.components.light import (
     ATTR_BRIGHTNESS,
-    SUPPORT_BRIGHTNESS,
     LightEntity,
+	ColorMode,
 )
 
 from .const import DOMAIN
 from .homeseer import HomeSeerEntity
 
 _LOGGER = logging.getLogger(__name__)
-
 
 async def async_setup_entry(hass, config_entry, async_add_entities):
     """Set up HomeSeer light-type devices."""
@@ -23,28 +22,23 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
         entity = HomeSeerLight(device, bridge)
         light_entities.append(entity)
         _LOGGER.info(
-            f"Added HomeSeer light-type device: {entity.name} ({entity.device_state_attributes})"
+            "Added HomeSeer light-type device: %s (%s)",
+            entity.name,
+            entity.device_state_attributes,
         )
 
     if light_entities:
         async_add_entities(light_entities)
 
-
 class HomeSeerLight(HomeSeerEntity, LightEntity):
     """Representation of a HomeSeer light-type device."""
 
-    @property
-    def supported_features(self):
-        """Flag supported features."""
-        return SUPPORT_BRIGHTNESS
+    _attr_supported_color_modes = {ColorMode.BRIGHTNESS}
 
     @property
     def brightness(self):
         """Return the brightness of the light."""
-        bri = self._device.dim_percent * 255
-        if bri > 255:
-            return 255
-        return bri
+        return min(255, self._device.dim_percent * 255)
 
     @property
     def is_on(self):
@@ -54,8 +48,12 @@ class HomeSeerLight(HomeSeerEntity, LightEntity):
     async def async_turn_on(self, **kwargs):
         """Turn the light on."""
         brightness = kwargs.get(ATTR_BRIGHTNESS, 255)
-        percent = int(brightness / 255 * 100)
-        await self._device.dim(percent)
+		if brightness:			  
+			percent = min(100, max(1, int(brightness / 255 * 100)))  # Ensure percentage is between 1 and 100
+			
+			await self._device.dim(percent)
+		else:	 
+            await self._device.on()	 
 
     async def async_turn_off(self, **kwargs):
         """Turn the light off."""
