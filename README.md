@@ -1,8 +1,15 @@
-**PLEASE NOTE: THE CUSTOM INTEGRATION IN THIS REPOSITORY IS OUT OF DATE AND NOT MAINTAINED. IT MAY OR MAY NOT WORK, EITHER PARTIALLY OR COMPLETELY. ISSUES WILL NOT BE ADDRESSED BY THE MAINTAINER.**
+**PLEASE NOTE: THIS IS A MAINTAINED FORK OF THE ORIGINAL REPOSITORY. IT IS PROVIDED "AS-IS" WITHOUT ANY WARRANTIES OR GUARANTEES OF SUPPORT.**
 
-# HomeSeer Custom Integration for Home Assistant
+# HomeSeer Integration for Home Assistant (Maintained Fork)
 
-[![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/custom-components/hacs) [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=WBGSD2WU6944G)
+**IMPORTANT:** This is a **maintained fork** of the original HomeSeer integration for Home Assistant.  
+The original repository has been archived and is no longer actively maintained.  
+This version includes updates to ensure compatibility with Home Assistant versions beyond 2025.1.  
+Please note that this project comes **as-is** with **no guarantees** or **official support**.
+
+This fork is heavily based on the excellent work done by the original authors and contributors of the [archived repository](https://github.com/marthoc/homeseer). Their efforts laid the foundation for this project, and I am grateful for their contributions.  
+
+I created this fork to maintain the integration for my own personal Home Assistant setup but am happy to share my work with the community. If others want to help support and enhance this fork, contributions are very welcome! However, please note that I cannot guarantee personal support or ongoing maintenance in the long term. At some point, I plan to transition away from using HomeSeer entirely, which will likely mark the end of my updates to this integration.
 
 [Home Assistant](https://home-assistant.io/) custom integration supporting [HomeSeer](www.homeseer.com) Smart Home Software (HS3 and HS4).
 
@@ -13,22 +20,29 @@ This integration will create Home Assistant entities for the following types of 
 - "Lockable" devices (i.e. devices with Lock/Unlock controls) as a Home Assistant lock entity
 - "Status" devices (i.e. devices with no controls) as a Home Assistant sensor entity
 
-The type of entity created can also depend on whether a "quirk" has been added for the device (see below) and options chosen by the user during configuration. This custom integration currently supports creating entities for the following Home Assistant platforms: binary sensor, cover, light, lock, scene, sensor, switch. Fan and Media Player entities will be added in a future update!
+The type of entity created can also depend on whether a "quirk" has been added for the device (see below) and options chosen by the user during configuration. This custom integration currently supports creating entities for the following Home Assistant platforms: binary sensor, cover, light, lock, scene, sensor, switch. Fan and Media Player entities may be added in future updates.
 
-## Pre-Installation
+## Disclaimer
+
+This repository is a community-maintained fork of the original [HomeSeer integration](https://github.com/marthoc/homeseer).  
+- There is **no official affiliation** with HomeSeer or its developers.  
+- This software is provided **as-is**, without any warranties or guarantees of functionality.  
+- Support is not guaranteed, but issues and pull requests are welcome.
+
+Use this integration at your own risk.
+
+## Key Differences from the Original Repository
+
+- Updated to fix breaking changes introduced in Home Assistant 2025.1.
+- Includes compatibility updates for future Home Assistant releases.
+
+
+### Pre-Installation
 This integration communicates with HomeSeer via both JSON and ASCII. You must enable control using JSON and ASCII commands in Tools/Setup/Network in the HomeSeer web interface. 
 
 ## Installation
 This custom integration must be installed for it to be loaded by Home Assistant.
 
-_The recommended installation method is via [HACS](https://hacs.xyz)._
-
-### HACS
-
-1. Add https://github.com/marthoc/homeseer as a custom repository in HACS.
-2. Search for "HomeSeer" under "Integrations" in HACS.
-3. Click "Install".
-4. Proceed with Configuration (see below).
 
 ### Manual
 
@@ -103,23 +117,13 @@ Allows the user to set any value on a HomeSeer device.
 |ref|Ref corresponding to the HomeSeer device |Integer|True|
 |value|Value to set the device to (integer) |Integer|True|
 
-## Support
-
-Please open an issue on this repository for any feature requests or bug reports. Some issues may be moved to the upstream repo marthoc/libhomeseer if the request or bug relates to the underlying python library.
-
-Debug logs are essential when requesting new features or for tracking down bugs. You can enable debug logging for the integration by adding the following to your configuration.yaml:
-
-```yaml
-logger:
-  default: critical
-  logs:
-    custom_components.homeseer: debug
-    libhomeseer: debug
-```
-The above entry will essentially silence the logs except for debug output from this integration and the underlying library.
-
-The only sensitive or personally identifying information contained in the debug logs will be your HomeSeer username, if you have supplied a value other than "default" (no passwords or external IPs are included in the debug logs).
-
 ## Caveats
 
 The HomeSeer JSON API exposes only limited information about the devices present in HomeSeer. Requests for certain features may be declined due to the required data not being present in the API response.
+
+
+## Contributions and Feedback
+
+Contributions are welcome!
+
+Let me know if there are additional edits or sections you'd like to adjust or expand upon!
