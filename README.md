@@ -125,5 +125,3 @@ The HomeSeer JSON API exposes only limited information about the devices present
 ## Contributions and Feedback
 
 Contributions are welcome!
-
-Let me know if there are additional edits or sections you'd like to adjust or expand upon!
