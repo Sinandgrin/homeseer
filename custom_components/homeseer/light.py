@@ -5,7 +5,7 @@ import logging
 from homeassistant.components.light import (
     ATTR_BRIGHTNESS,
     LightEntity,
-	ColorMode,
+    ColorMode,
 )
 
 from .const import DOMAIN
@@ -45,15 +45,19 @@ class HomeSeerLight(HomeSeerEntity, LightEntity):
         """Return true if device is on."""
         return self._device.is_on
 
+    @property
+    def color_mode(self):
+        """Return the color mode of the light."""
+        return ColorMode.BRIGHTNESS
+	
     async def async_turn_on(self, **kwargs):
         """Turn the light on."""
         brightness = kwargs.get(ATTR_BRIGHTNESS, 255)
-		if brightness:			  
-			percent = min(100, max(1, int(brightness / 255 * 100)))  # Ensure percentage is between 1 and 100
-			
-			await self._device.dim(percent)
-		else:	 
-            await self._device.on()	 
+        if brightness:              
+            percent = min(100, max(1, int(brightness / 255 * 100)))  # Ensure percentage is between 1 and 100
+            await self._device.dim(percent)
+        else:     
+            await self._device.on()     
 
     async def async_turn_off(self, **kwargs):
         """Turn the light off."""
