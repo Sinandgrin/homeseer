@@ -104,20 +104,20 @@ async def async_setup_entry(hass, config_entry):
         return False
 
     if not allow_events:
-		if "scene" in HOMESEER_PLATFORMS:
-			HOMESEER_PLATFORMS.remove("scene")
+        if "scene" in HOMESEER_PLATFORMS:
+            HOMESEER_PLATFORMS.remove("scene")
 
     hass.data[DOMAIN] = bridge
 
-	async def forward_platforms():
-		"""Forward platforms setup asynchronously."""
-		tasks = []											 
-		for platform in HOMESEER_PLATFORMS:        
-            tasks.append(hass.config_entries.async_forward_entry_setup(config_entry, platform))
+    async def forward_platforms():
+        """Forward platforms setup asynchronously."""
+        tasks = [
+            hass.config_entries.async_forward_entry_setups(config_entry, HOMESEER_PLATFORMS)
+        ]
         await asyncio.gather(*tasks)
 
     # Schedule platform setups
-    hass.async_create_task(forward_platforms())				  
+    hass.async_create_task(forward_platforms())
 
     hass.bus.async_listen_once("homeassistant_stop", bridge.stop)
 
